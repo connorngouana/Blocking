@@ -11,10 +11,12 @@ import java.util.concurrent.CompletableFuture;
 public class FeignController
 {
     private final FeignService feignService;
+    private final FeignEXService feignEXService;
 
-    public FeignController(FeignService feignService)
+    public FeignController(FeignService feignService, FeignEXService feignEXService)
     {
         this.feignService = feignService;
+        this.feignEXService = feignEXService;
     }
 
     @GetMapping("/feign")
@@ -35,4 +37,16 @@ public class FeignController
         long endTime = System.currentTimeMillis();
         return "Total time: " + (endTime - startTime) + "ms";
     }
+    @GetMapping("/Id")
+    public String getBlockingData()
+    {
+        long startTime = System.currentTimeMillis();
+        for(int i = 0; i<10; i++)
+        {
+            feignEXService.getMoreData();
+        }
+        long endTime = System.currentTimeMillis();
+        return "Total time: " + (endTime - startTime) + "ms";
+    }
+
 }
